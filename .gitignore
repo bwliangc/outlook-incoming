@@ -1,0 +1,9 @@
+.DS_Store
+.env
+server/.env
+.claude/
+data/
+node_modules/
+dist/
+server/node_modules/
+server/dist/

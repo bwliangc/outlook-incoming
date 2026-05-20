@@ -1,0 +1,12 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      HOTMAIL_HELPER_HOST: 0.0.0.0
+      HOTMAIL_HELPER_PORT: 17345
+      HOTMAIL_HELPER_WEB_DIR: /app/web
+    ports:
+      - "17345:17345"
+    restart: unless-stopped

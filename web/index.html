@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Outlook 快速取件</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="panel app-card">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">OUTLOOK INCOMING</p>
+          <h1>OUTLOOK 快速取件</h1>
+          <p class="subtitle">左侧管理账号，右侧获取验证码并手动复制。</p>
+        </div>
+        <button id="themeToggleBtn" class="theme-toggle" type="button" aria-label="切换昼夜模式">夜间</button>
+      </header>
+
+      <div class="workspace">
+        <aside class="left-pane">
+          <section class="import-zone pane-card">
+            <div class="section-title">
+              <div>
+                <p class="eyebrow">IMPORT</p>
+                <h2>账号</h2>
+              </div>
+              <span id="accountCount" class="count-pill">0 个账号</span>
+            </div>
+            <textarea id="importText" spellcheck="false" placeholder="账号----密码----ID----Token&#10;email@example.com----password----clientId----refreshToken"></textarea>
+            <div class="inline-actions">
+              <button id="importBtn" class="btn primary small" type="button">导入</button>
+              <button id="sampleBtn" class="btn ghost small" type="button">示例</button>
+            </div>
+          </section>
+
+          <section class="accounts-panel pane-card">
+            <div class="section-title compact">
+              <div>
+                <p class="eyebrow">ACCOUNTS</p>
+                <h2>列表</h2>
+              </div>
+              <button id="clearDataBtn" class="btn danger ghost small oval" type="button">清空</button>
+            </div>
+            <div id="accountsList" class="accounts-list"></div>
+          </section>
+        </aside>
+
+        <section class="right-pane">
+          <section class="code-zone">
+            <div>
+              <p class="eyebrow">LATEST MAIL</p>
+              <div id="currentCode" class="code-display">------</div>
+              <p id="currentMeta" class="meta">等待取件</p>
+              <button id="copyCodeBtn" class="btn primary small copy-code-btn" type="button">复制验证码</button>
+            </div>
+          </section>
+
+          <section id="mailDetail" class="mail-detail empty">暂无邮件内容</section>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div id="toastHost" class="toast-host" aria-live="polite"></div>
+
+  <script src="./mail-utils.js"></script>
+  <script src="./app.js" defer></script>
+</body>
+</html>
