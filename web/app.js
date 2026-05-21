@@ -123,7 +123,7 @@
     toast.className = `toast ${type}`.trim();
     toast.textContent = message;
     elements.toastHost.appendChild(toast);
-    setTimeout(() => toast.remove(), 3200);
+    setTimeout(() => toast.remove(), type === 'error' ? 8000 : 3200);
   }
 
   function shortError(error) {

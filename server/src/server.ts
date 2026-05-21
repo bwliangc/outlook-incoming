@@ -10,6 +10,9 @@ function errorMessage(error: unknown): string {
   if (lower.includes('invalid_grant') || lower.includes('aadsts70000') || lower.includes('refresh_token_or_scope_invalid')) {
     return '取件失败：refresh token 已失效，或与当前邮箱/clientId 不匹配。请重新获取该邮箱的 refresh token 后再导入。';
   }
+  if (lower.includes('unauthorized_client') || lower.includes('aadsts700016') || lower.includes('client_id_not_found_or_wrong_tenant')) {
+    return '取件失败：clientId 在当前 Microsoft 账号租户中不存在，或该 refresh token 不是由这个 clientId 签发。请检查 ID 是否填错，或重新使用正确应用授权获取 refresh token。';
+  }
   return message;
 }
 

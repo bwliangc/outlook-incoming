@@ -55,6 +55,7 @@ function getProxyDebugContext(): string {
 function classifyTokenRefreshFailure(result: RefreshResult): string {
   const detail = String(result.error || '').trim().toLowerCase();
   if (detail.includes('invalid_grant') || detail.includes('aadsts70000')) return 'invalid_grant';
+  if (detail.includes('unauthorized_client') || detail.includes('aadsts700016')) return 'unauthorized_client';
   if (detail.includes('proxy authentication required')) return 'proxy_auth_failed';
   if (detail.includes('connection refused')) return getProxyDebugContext() !== 'direct' ? 'proxy_connect_failed' : 'connection_refused';
   if (detail.includes('eof occurred in violation of protocol') || detail.includes('wrong version number')) return getProxyDebugContext() !== 'direct' ? 'proxy_tls_failed' : 'tls_failed';
@@ -67,6 +68,7 @@ function logTokenRefreshFailureDiagnosis(result: RefreshResult): void {
   let message = `token refresh diagnosis endpoint=${result.endpoint} category=${category}`;
   if (category.startsWith('proxy_')) message += ` proxy=${getProxyDebugContext()}`;
   else if (category === 'invalid_grant') message += ' hint=refresh_token_or_scope_invalid';
+  else if (category === 'unauthorized_client') message += ' hint=client_id_not_found_or_wrong_tenant';
   logInfo(message);
 }
 
