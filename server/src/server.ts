@@ -5,7 +5,12 @@ import { FETCH_LIMIT_DEFAULT, WEB_DIR, resolveServerConfig } from './config.js';
 import { clampTop, redactSensitive } from './utils.js';
 
 function errorMessage(error: unknown): string {
-  return redactSensitive(error instanceof Error ? error.message : String(error));
+  const message = redactSensitive(error instanceof Error ? error.message : String(error));
+  const lower = message.toLowerCase();
+  if (lower.includes('invalid_grant') || lower.includes('aadsts70000') || lower.includes('refresh_token_or_scope_invalid')) {
+    return '取件失败：refresh token 已失效，或与当前邮箱/clientId 不匹配。请重新获取该邮箱的 refresh token 后再导入。';
+  }
+  return message;
 }
 
 function logRequestFailure(label: string, error: unknown) {
