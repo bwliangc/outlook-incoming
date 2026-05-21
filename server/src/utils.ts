@@ -1,3 +1,13 @@
+
+const SENSITIVE_PAIR_PATTERN = /((?:refresh[_-]?token|access[_-]?token|client[_-]?secret|authorization|password|passwd|secret|token)\s*[:=]\s*)([^\s&;,]+)/gi;
+const LONG_SECRET_PATTERN = /\b[A-Za-z0-9._~+/-]{32,}={0,2}\b/g;
+
+export function redactSensitive(value: unknown): string {
+  return String(value || '')
+    .replace(SENSITIVE_PAIR_PATTERN, '$1[redacted]')
+    .replace(LONG_SECRET_PATTERN, '[redacted]');
+}
+
 export function compactText(value: unknown, limit = 400): string {
   return String(value || '').replace(/\r/g, ' ').replace(/\n/g, ' ').trim().slice(0, limit);
 }

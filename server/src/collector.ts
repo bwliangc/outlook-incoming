@@ -2,7 +2,7 @@ import { collectGraphMessages } from './graph.js';
 import { collectImapMessages } from './imap.js';
 import { collectOutlookMessages } from './outlookRest.js';
 import type { CollectorResult } from './types.js';
-import { compactText, logInfo } from './utils.js';
+import { compactText, logInfo, redactSensitive } from './utils.js';
 
 type Collector = (emailAddr: string, clientId: string, refreshToken: string, mailboxes: unknown[], top: number) => Promise<CollectorResult>;
 
@@ -21,7 +21,7 @@ export async function collectMessages(emailAddr: string, clientId: string, refre
       logInfo(`message collection success transport=${transportName} tokenEndpoint=${result.token_payload.token_endpoint || ''}`);
       return result;
     } catch (error) {
-      const message = compactText((error as Error).message || error, 600);
+      const message = compactText(redactSensitive((error as Error).message || error), 600);
       errors.push(`${transportName}: ${message}`);
       logInfo(`message collection failed transport=${transportName} detail=${message}`);
     }

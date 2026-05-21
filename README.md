@@ -68,7 +68,7 @@ Node 服务会同时提供：
 
 - 静态页面：`/`
 - 前端资源：`/app.js`、`/styles.css`、`/mail-utils.js`
-- API：`/api/messages`、`/api/code` 等
+- API：`/api/messages`（兼容短路径 `/messages`）
 
 ## Docker 启动
 
@@ -168,15 +168,14 @@ docker-compose build server
 }
 ```
 
-### `POST /api/code`
-
-获取邮件并尝试解析验证码。
-
 ## 环境变量
 
 - `HOTMAIL_HELPER_HOST`：服务监听地址，默认 `127.0.0.1`
 - `HOTMAIL_HELPER_PORT`：服务端口，默认 `17345`
 - `HOTMAIL_HELPER_WEB_DIR`：静态前端目录，默认 `../web`
+- `HOTMAIL_HELPER_ALLOWED_ORIGINS`：允许跨域调用 API 的来源，多个来源用英文逗号分隔；同源请求无需配置
+- `HOTMAIL_HELPER_RATE_LIMIT_WINDOW_MS`：API 限流窗口时间，默认 `60000` 毫秒
+- `HOTMAIL_HELPER_RATE_LIMIT_MAX`：单个 IP 在限流窗口内最多请求次数，默认 `30`
 
 ## 数据保存位置
 

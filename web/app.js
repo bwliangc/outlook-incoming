@@ -389,12 +389,18 @@
   function sanitizeEmailHtml(htmlContent) {
     const template = document.createElement('template');
     template.innerHTML = String(htmlContent || '');
-    template.content.querySelectorAll('script, iframe, object, embed').forEach((node) => node.remove());
+    template.content.querySelectorAll('script, iframe, object, embed, form, input, button, textarea, select, meta[http-equiv], link[rel=preload], link[rel=prefetch]').forEach((node) => node.remove());
     template.content.querySelectorAll('*').forEach((node) => {
       [...node.attributes].forEach((attribute) => {
         const name = attribute.name.toLowerCase();
         const value = attribute.value.trim().toLowerCase();
-        if (name.startsWith('on') || value.startsWith('javascript:')) {
+        if (
+          name.startsWith('on')
+          || value.startsWith('javascript:')
+          || name === 'srcset'
+          || name === 'autofocus'
+          || name === 'formaction'
+        ) {
           node.removeAttribute(attribute.name);
         }
       });
@@ -408,6 +414,7 @@
 <head>
   <base target="_blank">
   <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src https: data:; style-src 'unsafe-inline'; font-src data:; base-uri 'none'; form-action 'none';">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body { margin: 0; padding: 16px; color: #111827; font: 14px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #fff; }
@@ -456,7 +463,7 @@
       <div class="mail-detail-head">
         <strong>${escapeHtml(state.currentSubject || '无标题')}</strong>
       </div>
-      <iframe class="mail-frame" sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox" referrerpolicy="no-referrer"></iframe>
+      <iframe class="mail-frame" sandbox="" referrerpolicy="no-referrer"></iframe>
     `;
     elements.mailDetail.querySelector('iframe').srcdoc = iframeSrc;
   }
